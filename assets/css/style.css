@@ -1,0 +1,53 @@
+:root {
+    --primary-color: #FF6600;
+    --secondary-color: #FF9933;
+    --dark-color: #1A1A1A;
+    --light-color: #FFFFFF;
+}
+
+/* Navbar Styles */
+.navbar-custom {
+    background-color: var(--dark-color);
+    padding: 8px 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-custom .navbar-brand {
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    color: var(--light-color);
+}
+
+.navbar-custom .navbar-brand:hover {
+    color: var(--light-color);
+}
+
+.navbar-custom .logo-img {
+    height: 35px;
+    width: auto;
+    margin-right: 10px;
+    border-radius: 4px;
+    object-fit: contain;
+}
+
+/* Button Styles */
+.btn.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+/* Card Styles */
+.card .card-header {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+    padding: 1rem;
+}
