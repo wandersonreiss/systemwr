@@ -2,24 +2,44 @@
 session_start();
 require_once '../../config/database.php';
 require_once '../../auth.php';
+require_once '../../includes/functions.php'; // Adicione esta linha
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    try {
-        $stmt = $pdo->prepare("INSERT INTO clientes (nome, telefone, endereco, email, cpf, observacoes) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([
-            $_POST['nome'],
-            $_POST['telefone'],
-            $_POST['endereco'],
-            $_POST['email'],
-            $_POST['cpf'],
-            $_POST['observacoes']
-        ]);
-        
+    $nome = $_POST['nome'];
+    $telefone = $_POST['telefone'];
+    $email = $_POST['email'];
+    $endereco = $_POST['endereco'];
+    $observacoes = $_POST['observacoes'];
+    $cpf = !empty($_POST['cpf']) ? $_POST['cpf'] : null;
+    
+    $error = null;
+    
+    // Only validate CPF if one was provided
+    if (!empty($cpf)) {
+        $cpf_clean = preg_replace('/[^0-9]/', '', $cpf);
+        if (!validateCPF($cpf_clean)) {
+            $error = "CPF inválido. Por favor, verifique.";
+        } else {
+            $cpf = formatCPF($cpf_clean);
+        }
+    }
+    
+    if (!$error) {
+        $stmt = $pdo->prepare("INSERT INTO clientes (nome, telefone, email, endereco, observacoes, cpf) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$nome, $telefone, $email, $endereco, $observacoes, $cpf]);
         header("Location: index.php");
         exit();
-    } catch(PDOException $e) {
-        $error = "Erro ao cadastrar cliente.";
     }
+    
+    // Adicione máscara ao campo CPF
+    echo "<script>
+        function formatarCPF(campo) {
+            campo.value = campo.value.replace(/\D/g, '');
+            campo.value = campo.value.replace(/(\d{3})(\d)/, '$1.$2');
+            campo.value = campo.value.replace(/(\d{3})(\d)/, '$1.$2');
+            campo.value = campo.value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        }
+    </script>";
 }
 ?>
 <!DOCTYPE html>
@@ -80,7 +100,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">CPF</label>
-                            <input type="text" name="cpf" class="form-control">
+                            <input type="text" name="cpf" class="form-control" 
+                                   placeholder="000.000.000-00" 
+                                   oninput="formatarCPF(this)" 
+                                   maxlength="14">
+                            <small class="text-muted">Digite apenas números. A formatação será automática.</small>
                         </div>
                     </div>
 

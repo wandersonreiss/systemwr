@@ -13,6 +13,7 @@ $id = $_GET['id'];
 // Processar o formulário quando enviado
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
+        // Na query SQL do UPDATE
         $stmt = $pdo->prepare("UPDATE ordem_servico SET 
             tipo_aparelho = ?, marca = ?, modelo = ?, numero_serie = ?,
             descricao = ?, status = ?, data_previsao = ?, valor = ?
@@ -118,20 +119,28 @@ try {
                                 <input type="text" name="numero_serie" class="form-control" value="<?php echo htmlspecialchars($ordem['numero_serie']); ?>">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Status</label>
-                                <select name="status" class="form-select" required>
-                                    <option value="Aguardando" <?php echo $ordem['status'] == 'Aguardando' ? 'selected' : ''; ?>>Aguardando</option>
-                                    <option value="Em Andamento" <?php echo $ordem['status'] == 'Em Andamento' ? 'selected' : ''; ?>>Em Andamento</option>
-                                    <option value="Concluído" <?php echo $ordem['status'] == 'Concluído' ? 'selected' : ''; ?>>Concluído</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
                                 <label class="form-label">Prazo</label>
                                 <input type="date" name="data_previsao" class="form-control" value="<?php echo $ordem['data_previsao']; ?>" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Valor</label>
                                 <input type="text" name="valor" class="form-control" value="<?php echo number_format($ordem['valor'], 2, ',', '.'); ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-select" required>
+                                    <option value="Aguardando" <?php echo $ordem['status'] == 'Aguardando' ? 'selected' : ''; ?>>Aguardando</option>
+                                    <option value="Em Andamento" <?php echo $ordem['status'] == 'Em Andamento' ? 'selected' : ''; ?>>Em Andamento</option>
+                                    <option value="Aguardando Peça" <?php echo $ordem['status'] == 'Aguardando Peça' ? 'selected' : ''; ?>>Aguardando Peça</option>
+                                    <option value="Orcamento Pendente" <?php echo $ordem['status'] == 'Orcamento Pendente' ? 'selected' : ''; ?>>Orçamento Pendente</option>
+                                    <option value="Aguardando Aprovacao" <?php echo $ordem['status'] == 'Aguardando Aprovacao' ? 'selected' : ''; ?>>Aguardando Aprovação</option>
+                                    <option value="Aprovado" <?php echo $ordem['status'] == 'Aprovado' ? 'selected' : ''; ?>>Aprovado</option>
+                                    <option value="Sem Reparo" <?php echo $ordem['status'] == 'Sem Reparo' ? 'selected' : ''; ?>>Sem Reparo</option>
+                                    <option value="Cancelado" <?php echo $ordem['status'] == 'Cancelado' ? 'selected' : ''; ?>>Cancelado</option>
+                                    <option value="Abandonado" <?php echo $ordem['status'] == 'Abandonado' ? 'selected' : ''; ?>>Abandonado</option>
+                                    <option value="Concluido" <?php echo $ordem['status'] == 'Concluido' ? 'selected' : ''; ?>>Concluído</option>
+                                    <option value="Entregue" <?php echo $ordem['status'] == 'Entregue' ? 'selected' : ''; ?>>Entregue</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-12">

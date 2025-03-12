@@ -74,9 +74,40 @@ $ordens = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td><?php echo date('d/m/Y', strtotime($ordem['data_previsao'])); ?></td>
                                     <td>
                                         <span class="badge bg-<?php 
-                                            echo $ordem['status'] == 'Aguardando' ? 'warning' : 
-                                                ($ordem['status'] == 'Em Andamento' ? 'info' : 
-                                                    ($ordem['status'] == 'Concluído' ? 'success' : 'secondary')); 
+                                            switch($ordem['status']) {
+                                                case 'Em Andamento':
+                                                    echo 'info';
+                                                    break;
+                                                case 'Aguardando Peça':
+                                                    echo 'warning';
+                                                    break;
+                                                case 'Orçamento Pendente':
+                                                    echo 'secondary';
+                                                    break;
+                                                case 'Aguardando Aprovação':
+                                                    echo 'primary';
+                                                    break;
+                                                case 'Aprovado':
+                                                    echo 'success';
+                                                    break;
+                                                case 'Sem Reparo':
+                                                    echo 'danger';
+                                                    break;
+                                                case 'Cancelado':
+                                                    echo 'dark';
+                                                    break;
+                                                case 'Abandonado':
+                                                    echo 'danger';
+                                                    break;
+                                                case 'Concluído':
+                                                    echo 'success';
+                                                    break;
+                                                case 'Entregue':
+                                                    echo 'info';
+                                                    break;
+                                                default:
+                                                    echo 'warning'; // Para status 'Aguardando' e outros
+                                            }
                                         ?>">
                                             <?php echo htmlspecialchars($ordem['status']); ?>
                                         </span>

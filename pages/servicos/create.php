@@ -10,8 +10,8 @@ $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
         $stmt = $pdo->prepare("INSERT INTO ordem_servico (cliente_id, tipo_aparelho, marca, modelo, numero_serie, 
-            descricao, status, data_entrada, data_previsao, valor) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            descricao, data_entrada, data_previsao, valor) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         $stmt->execute([
             $_POST['cliente_id'],
@@ -19,8 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['marca'],
             $_POST['modelo'],
             $_POST['numero_serie'],
-            $_POST['observacoes'],  // campo do formulário mapeia para descricao no banco
-            'Aguardando',          // status inicial correto
+            $_POST['observacoes'],
             $_POST['data_entrada'],
             $_POST['prazo_entrega'],
             $_POST['valor']
@@ -117,16 +116,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Data de Entrada</label>
                             <input type="date" name="data_entrada" class="form-control" required 
                                    value="<?php echo date('Y-m-d'); ?>">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Prazo de Entrega</label>
                             <input type="date" name="prazo_entrega" class="form-control" required>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="form-label">Valor Estimado</label>
                             <input type="number" name="valor" class="form-control" step="0.01" min="0">
                         </div>
@@ -147,6 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Manter apenas o script de validação do formulário
         (function () {
             'use strict'
             var forms = document.querySelectorAll('.needs-validation')
